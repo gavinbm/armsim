@@ -4,20 +4,15 @@ from reg import *
 fin = open("input.txt").read().strip('\n')
 fin = fin.splitlines()
 
-# iterate, translate, and execute each line of code
-# from input.txt
 print("Before\n")
 print(Reg)
+
+# Storing all labels and line numbers in input.txt
+getLabels(fin)
+
+# iterate, translate, and execute each line of code
+# from input.txt
 i = 0
-
-# Get all labels from file
-for k in range(0, len(fin)):
-    tmp = parse(fin[k])
-    if ":" in tmp[0]:
-        Labels[tmp[0][:-1]] = k
-        print(Labels)
-
-# Parse and execute given asm
 while i < len(fin):
     parsed = parse(fin[i])
     ins = parsed[0]

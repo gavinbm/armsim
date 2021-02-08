@@ -1,14 +1,17 @@
+# Dict to hold pseudo registers, defaulted to 0 for simplicity
 Reg = {"x0":0,"x1":0,
        "x2":0,"x3":0,
        "x4":0,"x5":0,
        "x6":0,"x7":0,
        "x8":0,"x9":0,}
 
+# Dict to hold Flags that are used for cmp and branching
 Flags = {"eq":False,
          "gt":False,
          "lt":False,
          "ne":False}
 
+# Dict to hold all labels and their corresponding line numbers
 Labels = {}
 
 ''' Move Instruction '''
@@ -84,5 +87,16 @@ def sub(dest, op1, op2):
 def parse(line):
     parsed = [x for x in line.split(" ") if x != ""]
     for i in range(0, len(parsed)):
-        parsed[i]  = parsed[i].replace(" ", "").replace(",", "")
+        # comment handling
+        if "@" in parsed[i]:
+            parsed[i] = ""
+        else:
+            parsed[i] = parsed[i].replace(" ", "").replace(",", "").replace("#", "")
     return parsed
+
+''' Get Labels '''
+def getLabels(inputFile):
+    for k in range(0, len(inputFile)):
+        tmp = parse(inputFile[k])
+        if ":" in tmp[0]:
+            Labels[tmp[0][:-1]] = k
