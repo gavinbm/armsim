@@ -6,16 +6,20 @@ fin = fin.splitlines()
 
 # iterate, translate, and execute each line of code
 # from input.txt
-#print("Before interpretation\n")
+print("Before\n")
 print(Reg)
 i = 0
-while i < len(fin):
-    line = fin[i]
-    parsed = parse(line)
-    print(parsed)
-    if ":" in parsed[0]:
-        Labels.append(dict(label = parsed[0].replace(":", ""), lineNum = i))
+
+# Get all labels from file
+for k in range(0, len(fin)):
+    tmp = parse(fin[k])
+    if ":" in tmp[0]:
+        Labels[tmp[0][:-1]] = k
         print(Labels)
+
+# Parse and execute given asm
+while i < len(fin):
+    parsed = parse(fin[i])
     ins = parsed[0]
     if "mov" in ins:
         dest = parsed[1]
@@ -49,19 +53,15 @@ while i < len(fin):
             elif "cbnz" in ins and Flags["eq"] == False:
                 i = k
         else:
-            code = ins[2:4]
-            dest = parsed[1]
-            if code:
-                if Flags[code] == True:
-                    for label in Labels:
-                        if label["label"] == dest:
-                            i = label["lineNum"]
+            if "b." in ins:
+                flagCode = parsed[0][2:4]
+                if Flags[flagCode]:
+                    i = Labels[parsed[1]]
             else:
-                for label in Labels:
-                    if label["label"] == dest:
-                        i = label["lineNum"]
+                i = Labels[parsed[1]]
+                
     # iteration
     i += 1
 
-#print("after\n")
+print("\nafter\n")
 print(Reg)

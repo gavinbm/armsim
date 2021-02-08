@@ -9,7 +9,7 @@ Flags = {"eq":False,
          "lt":False,
          "ne":False}
 
-Labels = []
+Labels = {}
 
 ''' Move Instruction '''
 def mov(dest, data):

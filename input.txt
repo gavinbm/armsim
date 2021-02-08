@@ -4,7 +4,6 @@ mov x0, 14
     b.gt .loop
     b .end
     .loop:
-        add x3, x3, x1
         add x1, x1, 1
         b .start
     .end:
